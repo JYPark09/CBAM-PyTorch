@@ -25,7 +25,7 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
 
-    net = Network(3, 128, 10, 10)
+    net = Network(1, 128, 10, 10)
 
     if USE_CUDA:
         net = net.cuda()
