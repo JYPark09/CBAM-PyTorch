@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from module import ChannelAttention, SpatialAttention, Flatten
+from model.module import ChannelAttention, SpatialAttention
 
 class ResBlock(nn.Module):
     def __init__(self, channel: int, ratio=16):
@@ -27,8 +27,8 @@ class ResBlock(nn.Module):
         path = self.conv_lower(x)
         path = self.conv_upper(path)
 
-        path *= self.ca(path)
-        path *= self.sa(path)
+        path = self.ca(path) * path
+        path = self.sa(path) * path
 
         return self.relu(path + x)
 
@@ -47,6 +47,7 @@ class Network(nn.Module):
             nn.BatchNorm2d(128),
             nn.ReLU(inplace=True),
             nn.AdaptiveAvgPool2d(1),
+            nn.Flatten(),
             nn.Linear(128, num_classes)
         )
 
